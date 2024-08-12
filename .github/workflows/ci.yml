@@ -40,6 +40,8 @@ jobs:
     uses: ./.github/workflows/step-deploy.yml
     with:
       env: dev
+      resource_group_name: rg-dometrain-dev
+      app_service_name: app-dometrain-github-actions-niki93t-dev
     secrets: inherit
 
   deploy_prod:
@@ -48,4 +50,6 @@ jobs:
     uses: ./.github/workflows/step-deploy.yml
     with:
       env: prod
+      resource_group_name: rg-dometrain-prod
+      app_service_name: app-dometrain-github-actions-niki93t-prod
     secrets: inherit

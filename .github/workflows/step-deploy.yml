@@ -48,12 +48,21 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
+      - name: Run Bicep
+        run: |
+          az deployment group create \
+            --name ${{ inputs.env }}-deployment-${{ github.run_number }} \
+            --template-file infrastructure/main.bicep \
+            --resource-group ${{ inputs.resource_group_name }} \
+            --verbose
+
       - name: Deploy to Azure App Service
         uses: azure/webapps-deploy@v2
         with: 
           app-name: ${{ inputs.app_service_name }}
           slot-name: slot
           package: artifacts/
+
       - name: Swap slots
         run: |
           az webapp deployment slot swap -g ${{ inputs.resource_group_name }} -n ${{ inputs.app_service_name }} --slot ${{ inputs.app_service_slot_name }} --target-slot production --verbose

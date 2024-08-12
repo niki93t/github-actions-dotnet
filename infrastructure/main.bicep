@@ -1,4 +1,4 @@
-param location string = 'eastus'
+param location string = 'germanywestcentral'
 @allowed(['dev', 'prod'])
 param environment string
 
@@ -8,7 +8,7 @@ targetScope = 'resourceGroup'
 module app './appservice.bicep' = {
   name: 'appservice'
   params: {
-    appName: 'dometrain-github-actions-scottsauber'
+    appName: 'dometrain-github-actions-niki93t'
     environment: environment
     location: location
   }

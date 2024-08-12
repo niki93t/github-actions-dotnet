@@ -7,6 +7,19 @@ on:
         required: true
         type: string
         description: 'Environment to deploy to'
+      resource_group_name:
+        required: true
+        type: string
+        description: 'Resource group name'
+      app_service_name:
+        required: true
+        type: string
+        description: 'App service name'
+      app_service_slot_name:
+        required: false
+        type: string
+        description: 'App service slot name'
+        default: 'slot'
     secrets:
       AZURE_CLIENT_ID:
         required: true
@@ -38,5 +51,9 @@ jobs:
       - name: Deploy to Azure App Service
         uses: azure/webapps-deploy@v2
         with: 
-          app-name: app-dometrain-github-actions-niki93t-${{ inputs.env }}
+          app-name: ${{ inputs.app_service_name }}
+          slot-name: slot
           package: artifacts/
+      - name: Swap slots
+        run: |
+          az webapp deployment slot swap -g ${{ inputs.resource_group_name }} -n ${{ inputs.app_service_name }} --slot ${{ inputs.app_service_slot_name }} --target-slot production --verbose
